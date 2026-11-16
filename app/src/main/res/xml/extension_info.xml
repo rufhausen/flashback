@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExtensionInfo
+    displayName="@string/app_name"
+    icon="@drawable/ic_flashback"
+    id="flashback">
+
+    <BonusAction
+        actionId="toggle-flashback"
+        displayName="@string/toggle_flashback" />
+</ExtensionInfo>

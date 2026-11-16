@@ -1,0 +1,11 @@
+# Changelog
+
+Notes under **Unreleased** become the next GitHub release and the Karoo update notes.
+
+## [Unreleased]
+
+## [0.1.0] - 2026-11-16
+
+- Flash selected ANT+ rear light(s) while the radar reports a vehicle; restore the previous mode (or off) after a configurable hold.
+- Works on Karoo OS 1.663+ and the 12 Nov 2026 firmware (SensorService fixes from szaffarano/karoofirefly).
+- "Toggle Radar Flash" bonus action.
