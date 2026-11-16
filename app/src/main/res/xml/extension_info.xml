@@ -4,6 +4,13 @@
     icon="@drawable/ic_flashback"
     id="flashback">
 
+    <DataType
+        typeId="status"
+        displayName="@string/status_field"
+        description="@string/status_field_desc"
+        graphical="true"
+        icon="@drawable/ic_flashback" />
+
     <BonusAction
         actionId="toggle-flashback"
         displayName="@string/toggle_flashback" />

@@ -1,6 +1,6 @@
 # Flashback
 
-A Hammerhead Karoo extension that does one thing: **flash your rear light only while the radar sees a vehicle**, then put it back the way it was.
+A Hammerhead Karoo extension that does one thing: **flash your rear light only while the radar sees a vehicle**, then put it back the way it was. The point is battery: the light stays off until there's actually someone behind you.
 
 Built for a Garmin Varia RTL 515/516 + Karoo 3. It should also work with any ANT+ light paired to the Karoo, and any radar the Karoo can read.
 
@@ -12,11 +12,26 @@ Derived from [KarooFireFly](https://github.com/derstrassi/karoofirefly) via [sza
 |---|---|
 | No vehicle | Nothing. Karoo's own light control (or whatever you set) is in charge. |
 | Radar reports a vehicle | Selected light(s) switch to the flash mode (default: Fast Flash). |
+| Car closing fast | Switches to the fast-approach mode if you set one, and stays there until clear. |
 | Road clear | After a short hold (default 3 s), the light goes back to its previous mode, or Off if you chose that. |
 | Another car during the hold | Keeps flashing; no mode churn. |
 | Something knocks the light out of flash mid-alert | Re-asserts the flash (at most every 2 s). |
 | Radar disconnects mid-alert | Restores immediately, so the light isn't left strobing. |
 | Ride ends | Restores, releases the light session. |
+
+## Is it working?
+
+Add the **Flashback Status** data field to a ride page:
+
+| Field | Meaning |
+|---|---|
+| 🟩 **ARMED** · Light: Off | Radar clear, light confirmed off. |
+| 🟧 **FLASHING** · Light: Fast Flash ✓ | Car detected, and the light confirmed it's flashing. |
+| 🟧 **FLASHING** · Light: Off ✗ | Car detected but the light didn't follow. Something's wrong. |
+| 🟥 **NOT ACTIVE** · reason | Flashback can't control the light. You also get a beep and an alert. |
+| ⬛ **OFF / STANDBY** | Disabled, or no ride running. |
+
+The "Light:" part comes from what the Varia reports back, not what Flashback sent, so ✓ is real confirmation.
 
 It's active only while a ride is recording or paused. A **Toggle Radar Flash** bonus action is available for hardware or AXS buttons.
 

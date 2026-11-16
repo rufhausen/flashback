@@ -39,12 +39,14 @@ class MainActivity : ComponentActivity() {
         val lightsFlow = extension.flatMapLatest { it?.lights ?: flowOf(emptyList()) }
         val modesFlow = extension.flatMapLatest { it?.lightControl?.supportedModes ?: flowOf(emptyMap()) }
         val radarFlow = extension.flatMapLatest { it?.radarStatus ?: flowOf("Waiting for Karoo…") }
+        val statusFlow = extension.flatMapLatest { it?.status ?: flowOf(null) }
 
         setContent {
             val settings by repository.settings.collectAsState(FlashbackSettings())
             val lights by lightsFlow.collectAsState(emptyList())
             val modes by modesFlow.collectAsState(emptyMap())
             val radar by radarFlow.collectAsState("Waiting for Karoo…")
+            val status by statusFlow.collectAsState(null)
 
             MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
                 Surface {
@@ -53,6 +55,7 @@ class MainActivity : ComponentActivity() {
                         lights = lights,
                         supportedModes = modes,
                         radarStatus = radar,
+                        status = status,
                         onChange = { transform -> lifecycleScope.launch { repository.update(transform) } },
                         onTest = { id, mode -> extension.value?.testFlash(id, mode) },
                     )

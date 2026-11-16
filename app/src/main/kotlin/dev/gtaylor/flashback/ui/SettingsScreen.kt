@@ -27,6 +27,7 @@ import dev.gtaylor.flashback.KarooLight
 import dev.gtaylor.flashback.data.AfterAlert
 import dev.gtaylor.flashback.data.FlashbackSettings
 import dev.gtaylor.flashback.karoo.AntLightMode
+import dev.gtaylor.flashback.radar.FlashbackStatus
 
 private val FALLBACK_ALERT_MODES = listOf("FAST_FLASH", "SLOW_FLASH", "RANDOM_FLASH")
 
@@ -36,6 +37,7 @@ fun SettingsScreen(
     lights: List<KarooLight>,
     supportedModes: Map<String, Set<String>>,
     radarStatus: String,
+    status: FlashbackStatus?,
     onChange: ((FlashbackSettings) -> FlashbackSettings) -> Unit,
     onTest: (deviceId: String, mode: String) -> Unit,
 ) {
@@ -52,6 +54,7 @@ fun SettingsScreen(
             "Flashes your rear light only while the radar sees a vehicle. Otherwise Karoo stays in charge.",
             style = MaterialTheme.typography.bodySmall,
         )
+        status?.let { Text("Status: ${it.headline} · ${it.detail}", style = MaterialTheme.typography.bodySmall) }
         Text("Radar: $radarStatus", style = MaterialTheme.typography.bodySmall)
 
         LabeledSwitch("Enabled", settings.enabled) { on -> onChange { it.copy(enabled = on) } }
@@ -83,7 +86,7 @@ fun SettingsScreen(
         }
         HorizontalDivider()
 
-        SectionTitle("Flash mode")
+        SectionTitle("Flash mode (approaching)")
         val selected = settings.lightIds.firstOrNull { id -> lights.any { it.id == id } }
         val modes =
             selected
@@ -98,6 +101,18 @@ fun SettingsScreen(
         ) { mode -> onChange { it.copy(alertMode = mode) } }
         OutlinedButton(enabled = selected != null, onClick = { selected?.let { onTest(it, settings.alertMode) } }) {
             Text("Test flash (3s)")
+        }
+
+        SectionTitle("Flash mode (fast approach)")
+        ChipGroup(
+            options = listOf<Pair<String?, String>>(null to "Same") +
+                modes.map { it to (AntLightMode.fromKarooName(it)?.displayName ?: it) },
+            selected = settings.fastAlertMode,
+        ) { mode -> onChange { it.copy(fastAlertMode = mode) } }
+        settings.fastAlertMode?.let { fast ->
+            OutlinedButton(enabled = selected != null, onClick = { selected?.let { onTest(it, fast) } }) {
+                Text("Test fast flash (3s)")
+            }
         }
         HorizontalDivider()
 
@@ -118,6 +133,16 @@ fun SettingsScreen(
             options = listOf(0, 3, 5, 10).map { it to "${it}s" },
             selected = settings.clearHoldSeconds,
         ) { secs -> onChange { it.copy(clearHoldSeconds = secs) } }
+        HorizontalDivider()
+
+        LabeledSwitch("Alert me if it's not working", settings.healthAlerts) { on ->
+            onChange { it.copy(healthAlerts = on) }
+        }
+        Text(
+            "Add the \"Flashback Status\" data field to a ride page to see Armed / Flashing / Not active, " +
+                "with ✓ when the light confirms the mode.",
+            style = MaterialTheme.typography.bodySmall,
+        )
         HorizontalDivider()
 
         Text(

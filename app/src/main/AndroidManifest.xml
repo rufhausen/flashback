@@ -34,6 +34,11 @@
                 android:name="io.hammerhead.karooext.EXTENSION_INFO"
                 android:resource="@xml/extension_info" />
         </service>
+
+        <!-- Karoo polls this for updates; published by .github/workflows/release.yml. Needs a public repo. -->
+        <meta-data
+            android:name="io.hammerhead.karooext.MANIFEST_URL"
+            android:value="https://github.com/rufhausen/flashback/releases/latest/download/manifest.json" />
     </application>
 
 </manifest>

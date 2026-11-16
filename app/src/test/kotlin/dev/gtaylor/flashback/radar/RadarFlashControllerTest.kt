@@ -173,4 +173,54 @@ class RadarFlashControllerTest {
             runCurrent()
             assertEquals(varia to "OFF", commands.last())
         }
+
+    @Test
+    fun `fast approach escalates and stays escalated until clear`() =
+        runTest {
+            reported[varia] = "OFF"
+            val c = controller(FlashbackSettings(lightIds = setOf(varia), alertMode = "SLOW_FLASH", fastAlertMode = "FAST_FLASH", clearHoldSeconds = 0))
+
+            c.onThreatLevel(1)
+            assertEquals("SLOW_FLASH", c.alertMode.value)
+            c.onThreatLevel(2)
+            c.onThreatLevel(1)
+            assertEquals(listOf(varia to "SLOW_FLASH", varia to "FAST_FLASH"), commands)
+            assertEquals("FAST_FLASH", c.alertMode.value)
+
+            c.onThreatLevel(0)
+            runCurrent()
+            assertEquals(varia to "OFF", commands.last())
+            assertEquals(null, c.alertMode.value)
+
+            c.onThreatLevel(1)
+            assertEquals(varia to "SLOW_FLASH", commands.last())
+        }
+
+    @Test
+    fun `fast car first goes straight to fast mode`() =
+        runTest {
+            val c = controller(FlashbackSettings(lightIds = setOf(varia), alertMode = "SLOW_FLASH", fastAlertMode = "FAST_FLASH"))
+            c.onThreatLevel(2)
+            assertEquals(listOf(varia to "FAST_FLASH"), commands)
+        }
+
+    @Test
+    fun `no fast mode configured means no escalation command`() =
+        runTest {
+            val c = controller()
+            c.onThreatLevel(1)
+            c.onThreatLevel(2)
+            assertEquals(listOf(varia to "FAST_FLASH"), commands)
+        }
+
+    @Test
+    fun `restore never returns to a flash mode we set ourselves`() =
+        runTest {
+            reported[varia] = "SLOW_FLASH"
+            val c = controller(FlashbackSettings(lightIds = setOf(varia), alertMode = "SLOW_FLASH", fastAlertMode = "FAST_FLASH", clearHoldSeconds = 0))
+            c.onThreatLevel(1)
+            c.onThreatLevel(0)
+            runCurrent()
+            assertEquals(varia to "OFF", commands.last())
+        }
 }
