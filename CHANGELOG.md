@@ -7,6 +7,7 @@ Notes under **Unreleased** become the next GitHub release and the Karoo update n
 - **Flashback Status data field** for ride pages: ACTIVE / FLASHING / NOT ACTIVE / OFF, with the mode the light itself reports (✓ when it matches what Flashback sent, ✗ when it doesn't).
 - **Not-working alert**: in-ride alert and beep if Flashback can't control the light for 20 s (light service unreachable, light not paired or disconnected, command failed), plus an "active" notice when it recovers.
 - **Separate fast-approach flash mode**: e.g. Slow Flash for approaching cars, Fast Flash once one is closing fast. Stays escalated until the road clears.
+- Disclaimer added to the settings screen and README.
 
 ## [0.1.0] - 2026-11-16
 
