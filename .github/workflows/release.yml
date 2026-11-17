@@ -54,10 +54,11 @@ jobs:
             --version "${{ steps.version.outputs.name }}" \
             --code "${{ steps.version.outputs.code }}" \
             --notes notes.md > manifest.json
+          { cat notes.md; echo; echo '---'; echo; echo '> **Use at your own risk.** Flashback is not a safety device, can fail without warning (especially after Karoo firmware updates), and was written mostly by an AI (Claude). Provided as-is with no warranty. Read the [Disclaimer](https://github.com/'"$GITHUB_REPOSITORY"'#disclaimer) before installing.'; } > release-body.md
 
       - uses: softprops/action-gh-release@v3
         with:
-          body_path: notes.md
+          body_path: release-body.md
           files: |
             flashback.apk
             manifest.json

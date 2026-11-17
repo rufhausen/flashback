@@ -3,5 +3,5 @@
     <string name="app_name">Flashback</string>
     <string name="toggle_flashback">Toggle Radar Flash</string>
     <string name="status_field">Flashback Status</string>
-    <string name="status_field_desc">Armed / flashing / not active, with the mode the light reports</string>
+    <string name="status_field_desc">Active / flashing / not active, with the mode the light reports</string>
 </resources>

@@ -139,7 +139,7 @@ fun SettingsScreen(
             onChange { it.copy(healthAlerts = on) }
         }
         Text(
-            "Add the \"Flashback Status\" data field to a ride page to see Armed / Flashing / Not active, " +
+            "Add the \"Flashback Status\" data field to a ride page to see Active / Flashing / Not active, " +
                 "with ✓ when the light confirms the mode.",
             style = MaterialTheme.typography.bodySmall,
         )
@@ -149,6 +149,16 @@ fun SettingsScreen(
             "Tip: if you want the light dark until a car shows up, set the Varia's light to Off " +
                 "(or Auto Control off) in Karoo's sensor settings. Flashback only acts during a ride.",
             style = MaterialTheme.typography.bodySmall,
+        )
+        HorizontalDivider()
+
+        Text(
+            "Use at your own risk. Flashback is not a safety device and can fail without warning, " +
+                "especially after Karoo firmware updates. Never rely on it to keep you safe. It's an " +
+                "unofficial hobby project, written mostly by an AI (Claude), provided as-is with no " +
+                "warranty. Not affiliated with Hammerhead or Garmin.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(Modifier.padding(8.dp))
     }

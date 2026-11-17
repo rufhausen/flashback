@@ -4,6 +4,9 @@ A Hammerhead Karoo extension that does one thing: **flash your rear light only w
 
 Built for a Garmin Varia RTL 515/516 + Karoo 3. It should also work with any ANT+ light paired to the Karoo, and any radar the Karoo can read.
 
+> [!WARNING]
+> **Use at your own risk. This is not a safety device.** Flashback is an unofficial hobby project, built almost entirely by an AI (Claude), and it relies on undocumented Karoo internals that firmware updates have already broken twice. Your light may not flash when a car is behind you. Read the [Disclaimer](#disclaimer) before installing.
+
 Derived from [KarooFireFly](https://github.com/derstrassi/karoofirefly) via [szaffarano's maintenance fork](https://github.com/szaffarano/karoofirefly). The ANT+ light plumbing comes from there. Everything else (sunrise/sunset, ambient sensor, BLE lights, zones) is gone.
 
 ## Behaviour
@@ -25,7 +28,7 @@ Add the **Flashback Status** data field to a ride page:
 
 | Field | Meaning |
 |---|---|
-| 🟩 **ARMED** · Light: Off | Radar clear, light confirmed off. |
+| 🟩 **ACTIVE** · Light: Off | Radar clear, light confirmed off. |
 | 🟧 **FLASHING** · Light: Fast Flash ✓ | Car detected, and the light confirmed it's flashing. |
 | 🟧 **FLASHING** · Light: Off ✗ | Car detected but the light didn't follow. Something's wrong. |
 | 🟥 **NOT ACTIVE** · reason | Flashback can't control the light. You also get a beep and an alert. |
@@ -93,3 +96,42 @@ app/src/main/kotlin/
     ui/SettingsScreen.kt         Compose settings
   io/hammerhead/.../LightMode.kt parcel stand-in; class name is the contract, don't move it
 ```
+
+## Credits & license
+
+Flashback is MIT-licensed (see [LICENSE](LICENSE)) and stands on other people's work:
+
+- **[KarooFireFly](https://github.com/derstrassi/karoofirefly)** by derstrassi (MIT). It's the original Karoo ANT+ light control. `karoo/` and `io/hammerhead/.../LightMode.kt` are adapted from it.
+- **[szaffarano/karoofirefly](https://github.com/szaffarano/karoofirefly)** by Sebastián Zaffarano (MIT). The maintenance fork whose v0.7.2 firmware fixes (transaction-code probing, hand-written parcels) Flashback uses.
+
+Both copyright notices are kept in [LICENSE](LICENSE), as MIT requires.
+
+Runtime dependencies, all open source:
+
+| Library | License |
+|---|---|
+| [karoo-ext](https://github.com/hammerheadnav/karoo-ext) (Hammerhead) | Apache-2.0 |
+| AndroidX (core, lifecycle, activity, Compose UI, Material 3, DataStore) | Apache-2.0 |
+| [Timber](https://github.com/JakeWharton/timber) | Apache-2.0 |
+| kotlinx.serialization, kotlinx.coroutines, Kotlin stdlib | Apache-2.0 |
+| desugar_jdk_libs (core library desugaring) | GPL-2.0 with Classpath Exception |
+
+JUnit (EPL-1.0) is used only for tests and isn't shipped in the APK.
+
+## Disclaimer
+
+**Please read this before you install Flashback.**
+
+**No warranty, no liability.** Flashback is free software provided "as is", without warranty of any kind, express or implied, as stated in the [LICENSE](LICENSE). You download, install and use it entirely at your own risk. To the fullest extent the law allows, the author(s) and contributors are not responsible or liable for any harm that follows from using it, including injury, death, collisions, damage to or loss of property or equipment (your Karoo, light, radar or bike), battery drain, lost ride data, or any other direct or indirect loss.
+
+**It is not a safety device.** Flashback can fail silently or behave unexpectedly. Your light might not flash when a vehicle is behind you, might flash when nothing is there, might stay in a mode you didn't expect, or might be left off. Radar can miss vehicles. Never rely on Flashback, your light or your radar to keep you safe. Ride as though none of them were there, keep your own eyes and ears on traffic, and follow local traffic laws. If you need your light to be on, set it on yourself and leave Flashback disabled.
+
+**It depends on undocumented internals.** Karoo doesn't provide a public API for controlling lights, so Flashback talks to Karoo's internal sensor service in ways Hammerhead doesn't document or support. Any Karoo firmware update can break it without warning, and has done so twice already. Check that it still works after every firmware update and before every ride you care about.
+
+**Flashing-light rules vary.** Some places restrict when or how bicycle lights may flash, or require a steady light at night. Making sure your lighting is legal where you ride is up to you.
+
+**How it was made.** I'm a software developer, but I have no prior experience with Android, Kotlin, ANT+, or Karoo extension development. Flashback was designed, written and documented almost entirely by Claude (Anthropic's AI model), working in Claude Code, with me directing it and testing it on my own Karoo 3 and Varia. It hasn't had an independent code review or safety testing, and it has only been tried on that hardware. Treat it as an experiment, not a finished product.
+
+**Unofficial.** Flashback is not affiliated with, endorsed by, or supported by Hammerhead, SRAM, Garmin, or the KarooFireFly authors. Don't contact them for support with it. "Karoo", "Hammerhead", "Varia" and "Garmin" are trademarks of their respective owners and are used here only to describe compatibility. Sideloading third-party extensions may affect the support you get from those companies.
+
+By installing or using Flashback you accept these terms. If you don't, don't install it.

@@ -1,3 +1,5 @@
+// Adapted from KarooFireFly (https://github.com/derstrassi/karoofirefly, MIT) via
+// szaffarano/karoofirefly v0.7.2 (https://github.com/szaffarano/karoofirefly). See LICENSE.
 package io.hammerhead.datamodels.timeseriesData.models
 
 import android.os.Parcel

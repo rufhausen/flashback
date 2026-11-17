@@ -1,3 +1,5 @@
+// Adapted from KarooFireFly (https://github.com/derstrassi/karoofirefly, MIT) via
+// szaffarano/karoofirefly v0.7.2 (https://github.com/szaffarano/karoofirefly). See LICENSE.
 package dev.gtaylor.flashback.karoo
 
 enum class AntLightMode(

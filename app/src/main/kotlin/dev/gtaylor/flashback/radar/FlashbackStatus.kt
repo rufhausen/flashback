@@ -2,7 +2,7 @@ package dev.gtaylor.flashback.radar
 
 import dev.gtaylor.flashback.karoo.AntLightMode
 
-enum class StatusLevel { IDLE, ARMED, FLASHING, PROBLEM }
+enum class StatusLevel { IDLE, ACTIVE, FLASHING, PROBLEM }
 
 data class FlashbackStatus(
     val level: StatusLevel,
@@ -31,7 +31,7 @@ object FlashbackStatusFormatter {
         return if (alertMode != null) {
             FlashbackStatus(StatusLevel.FLASHING, "FLASHING", lightLine(reported, expected = alertMode))
         } else {
-            FlashbackStatus(StatusLevel.ARMED, "ARMED", lightLine(reported, expected = null))
+            FlashbackStatus(StatusLevel.ACTIVE, "ACTIVE", lightLine(reported, expected = null))
         }
     }
 

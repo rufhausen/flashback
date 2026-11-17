@@ -13,8 +13,8 @@ class FlashbackStatusFormatterTest {
     ) = FlashbackStatusFormatter.format(riding, enabled, problem, alertMode, reported)
 
     @Test
-    fun `armed shows the light's reported mode`() {
-        assertEquals(FlashbackStatus(StatusLevel.ARMED, "ARMED", "Light: Off"), fmt())
+    fun `active shows the light's reported mode`() {
+        assertEquals(FlashbackStatus(StatusLevel.ACTIVE, "ACTIVE", "Light: Off"), fmt())
     }
 
     @Test
